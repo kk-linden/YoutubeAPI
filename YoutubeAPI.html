@@ -1,0 +1,630 @@
+<!-- 
+    to do: 
+        bonus pause and play buttons??
+        LINK TO API DATA: https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&q=dogs&key=AIzaSyAxSfa3r6UASA6pghoMzsW7T8qMg5CkZOQ
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Youtube API</title>
+</head>
+
+<body>
+    <div class="container">
+        <section id="video">
+            <div id="div1">
+                <iframe id="iframe" class="youtube-video" width="560" height="315" frameborder="0" src=""
+                    allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                <!-- <button id="play" class="play-video">PLAY</button>
+                <button id="pause" class="pause-video">PAUSE</button>
+                <button id="stop" class="stop-video">STOP</button> -->
+                <p id="paraTitleTest"> </p>
+            </div>
+            <div id="div2">
+                <iframe id="iframe1" width="560" height="315" frameborder="0" src="" allow="autoplay; encrypted-media"
+                    allowfullscreen></iframe>
+            </div>
+            <div id="div3">
+                <iframe id="iframe2" width="560" height="315" frameborder="0" src="" allow="autoplay; encrypted-media"
+                    allowfullscreen></iframe>
+            </div>
+            <div id="div4">
+                <iframe id="iframe3" width="560" height="315" frameborder="0" src="" allow="autoplay; encrypted-media"
+                    allowfullscreen></iframe>
+            </div>
+            <div id="div5">
+                <iframe id="iframe4" width="560" height="315" frameborder="0" src="" allow="autoplay; encrypted-media"
+                    allowfullscreen></iframe>
+            </div>
+        </section>
+
+        <header>
+            <img src="https://cdn.mos.cms.futurecdn.net/8gzcr6RpGStvZFA2qRt4v6.jpg" alt="" class="logo">
+        </header>
+
+        <section id="SearchBar">
+            <input type='search' class="search" id=search placeholder="Search Youtube">
+            <button type="submit" class="submit" id="btn" onclick=SearchYoutube()>Enter</button>
+        </section>
+    </div>
+
+    <style>
+        body {
+            background-color: #eee;
+        }
+
+        .container {
+            width: 560px;
+            background-color: #fff;
+            margin: 0 auto;
+            height: 2550%
+        }
+
+        header,
+        #SearchBar,
+        #SubmitBar {
+            position: fixed;
+            text-align: center;
+            width: 560px;
+            background-color: #fff;
+            top: 0px;
+        }
+
+        .logo {
+            width: 170px;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        .search {
+            width: 120px;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        #SearchBar {
+            top: 100px;
+        }
+
+        #search {
+            width: 200px;
+            height: 30px;
+            border-radius: 10px;
+        }
+
+        #btn {
+            width: 80px;
+            height: 30px;
+            border-radius: 10px;
+            background-color: #fff;
+        }
+
+        #video {
+            position: relative;
+            text-align: left;
+            top: 150px;
+        }
+
+        #iframe {
+            position: initial;
+            text-align: left;
+            width: 280px;
+            height: 170px;
+            margin-left: 20px;
+        }
+
+        #iframe1 {
+            position: initial;
+            text-align: left;
+            width: 280px;
+            height: 170px;
+            margin-left: 20px;
+        }
+
+        #iframe2 {
+            position: initial;
+            text-align: left;
+            width: 280px;
+            height: 170px;
+            margin-top: 20px;
+            margin-left: 20px;
+        }
+
+        #iframe3 {
+            position: initial;
+            text-align: left;
+            width: 280px;
+            height: 170px;
+            margin-top: 20px;
+            margin-left: 20px;
+        }
+
+        #iframe4 {
+            position: initial;
+            text-align: left;
+            width: 280px;
+            height: 170px;
+            margin-top: 20px;
+            margin-left: 20px;
+        }
+
+        #paraTitle1,
+        #paraTitle2,
+        #paraTitle3,
+        #paraTitle4,
+        #paraTitle5,
+        #paraDate1,
+        #paraDate2,
+        #paraDate3,
+        #paraDate4,
+        #paraDate5,
+        #paraDate1,
+        #paraDate2,
+        #paraDate3,
+        #paraDate4,
+        #paraDate5,
+        #paraChannel1,
+        #paraChannel2,
+        #paraChannel3,
+        #paraChannel4,
+        #paraChannel5,
+        #paraComment0,
+        #paraComment1,
+        #paraComment2,
+        #paraComment3,
+        #paraComment4,
+        #paraComment5,
+        #paraComment20,
+        #paraComment21,
+        #paraComment22,
+        #paraComment23,
+        #paraComment24,
+        #paraComment25,
+        #paraComment30,
+        #paraComment31,
+        #paraComment32,
+        #paraComment33,
+        #paraComment34,
+        #paraComment35,
+        #paraComment40,
+        #paraComment41,
+        #paraComment42,
+        #paraComment43,
+        #paraComment44,
+        #paraComment45,
+        #paraComment50,
+        #paraComment51,
+        #paraComment52,
+        #paraComment53,
+        #paraComment54,
+        #paraComment55 {
+            margin-left: 50px;
+            margin-right: 30px;
+        }
+
+        #playButton1 {
+            height: 50px;
+            width: 70px;
+        }
+    </style>
+
+    <script>
+
+
+        function makeText(words, element) {
+            var text = document.createTextNode(words);
+            element.appendChild(text)
+        }
+
+        function SearchYoutube() {
+            document.body.scrollTop = document.documentElement.scrollTop = 0;
+
+            var searchTerms = search.value
+
+            // var tag = document.createElement('script');
+            // tag.src = "https://www.youtube.com/iframe_api";
+            // var firstScriptTag = document.getElementsByTagName('script')[0];
+            // firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+            if (searchTerms == "") {
+                alert("Please Enter Valid Input")
+            } else {
+                var searchTerms = search.value
+                const YOUTUBE_API_KEY = "AIzaSyAxSfa3r6UASA6pghoMzsW7T8qMg5CkZOQ"
+                const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&enablejsapi=1&q=${searchTerms}&key=${YOUTUBE_API_KEY}`;
+                fetch(url)
+                    .then(function (data) {
+                        return data.json()
+                    }).then(function (result) {
+
+                        var FirstVideoId = result.items[0].id.videoId
+                        var FirstVideoTitle = result.items[0].snippet.title
+                        var FirstVideoDateArr = result.items[0].snippet.publishedAt.split("")
+                        FirstVideoDateArray = FirstVideoDateArr.slice(0, 10)
+                        var FirstVideoDate = FirstVideoDateArray.join("")
+                        var FirstChannelName = result.items[0].snippet.channelTitle
+                        console.log(result.items[0].snippet.channelTitle)
+                        src = `https://www.youtube.com/embed/${FirstVideoId}`
+                        document.getElementById("iframe").src = src;
+                        var paraTitle1 = document.createElement("p");
+                        paraTitle1.id = "paraTitle1";
+                        document.getElementById("div1").appendChild(paraTitle1)
+                        makeText("Title: " + FirstVideoTitle, paraTitle1)
+                        var paraDate1 = document.createElement("p");
+                        paraDate1.id = "paraDate1";
+                        document.getElementById("div1").appendChild(paraDate1)
+                        makeText("Date: " + FirstVideoDate, paraDate1)
+                        var paraChannel1 = document.createElement("p");
+                        paraChannel1.id = "paraChannel1";
+                        document.getElementById("div1").appendChild(paraChannel1)
+                        makeText("Channel: " + FirstChannelName, paraChannel1)
+                        var paraComment0 = document.createElement("p");
+                        paraComment0.id = "paraComment0";
+                        document.getElementById("div1").appendChild(paraComment0)
+                        var paraComment1 = document.createElement("p");
+                        paraComment1.id = "paraComment1";
+                        document.getElementById("div1").appendChild(paraComment1)
+                        var paraComment2 = document.createElement("p");
+                        paraComment2.id = "paraComment2";
+                        document.getElementById("div1").appendChild(paraComment2)
+                        var paraComment3 = document.createElement("p");
+                        paraComment3.id = "paraComment3";
+                        document.getElementById("div1").appendChild(paraComment3)
+                        var paraComment4 = document.createElement("p");
+                        paraComment4.id = "paraComment4";
+                        document.getElementById("div1").appendChild(paraComment4)
+
+
+                        var SecondVideoId = result.items[1].id.videoId
+                        var SecondVideoTitle = result.items[1].snippet.title
+                        var SecondVideoDateArr = result.items[1].snippet.publishedAt.split("")
+                        SecondVideoDateArray = SecondVideoDateArr.slice(0, 10)
+                        var SecondVideoDate = SecondVideoDateArray.join("")
+                        var SecondChannelName = result.items[1].snippet.channelTitle
+                        src1 = `https://www.youtube.com/embed/${SecondVideoId}`
+                        document.getElementById("iframe1").src = src1;
+                        var paraTitle2 = document.createElement("p");
+                        paraTitle2.id = "paraTitle2";
+                        document.getElementById("div2").appendChild(paraTitle2)
+                        makeText("Title: " + SecondVideoTitle, paraTitle2)
+                        var paraDate2 = document.createElement("p");
+                        paraDate2.id = "paraDate2";
+                        document.getElementById("div2").appendChild(paraDate2)
+                        makeText("Date: " + SecondVideoDate, paraDate2)
+                        var paraChannel2 = document.createElement("p");
+                        paraChannel2.id = "paraChannel2";
+                        document.getElementById("div2").appendChild(paraChannel2)
+                        makeText("Channel: " + SecondChannelName, paraChannel2)
+                        var paraComment20 = document.createElement("p");
+                        paraComment20.id = "paraComment20";
+                        document.getElementById("div2").appendChild(paraComment20)
+                        var paraComment21 = document.createElement("p");
+                        paraComment21.id = "paraComment21";
+                        document.getElementById("div2").appendChild(paraComment21)
+                        var paraComment22 = document.createElement("p");
+                        paraComment22.id = "paraComment22";
+                        document.getElementById("div2").appendChild(paraComment22)
+                        var paraComment23 = document.createElement("p");
+                        paraComment23.id = "paraComment23";
+                        document.getElementById("div2").appendChild(paraComment23)
+                        var paraComment24 = document.createElement("p");
+                        paraComment24.id = "paraComment24";
+                        document.getElementById("div2").appendChild(paraComment24)
+
+                        var ThirdVideoId = result.items[2].id.videoId
+                        var ThirdVideoTitle = result.items[2].snippet.title
+                        var ThirdVideoDateArr = result.items[2].snippet.publishedAt.split("")
+                        ThirdVideoDateArray = ThirdVideoDateArr.slice(0, 10)
+                        var ThirdVideoDate = ThirdVideoDateArray.join("")
+                        var ThirdChannelName = result.items[2].snippet.channelTitle
+                        src2 = `https://www.youtube.com/embed/${ThirdVideoId}`
+                        document.getElementById("iframe2").src = src2;
+                        var paraTitle3 = document.createElement("p");
+                        paraTitle3.id = "paraTitle3";
+                        document.getElementById("div3").appendChild(paraTitle3)
+                        makeText("Title: " + ThirdVideoTitle, paraTitle3)
+                        var paraDate3 = document.createElement("p");
+                        paraDate3.id = "paraDate3";
+                        document.getElementById("div3").appendChild(paraDate3)
+                        makeText("Date: " + ThirdVideoDate, paraDate3)
+                        var paraChannel3 = document.createElement("p");
+                        paraChannel3.id = "paraChannel3";
+                        document.getElementById("div3").appendChild(paraChannel3)
+                        makeText("Channel: " + ThirdChannelName, paraChannel3)
+                        var paraComment30 = document.createElement("p");
+                        paraComment30.id = "paraComment30";
+                        document.getElementById("div3").appendChild(paraComment30)
+                        var paraComment31 = document.createElement("p");
+                        paraComment31.id = "paraComment31";
+                        document.getElementById("div3").appendChild(paraComment31)
+                        var paraComment32 = document.createElement("p");
+                        paraComment32.id = "paraComment32";
+                        document.getElementById("div3").appendChild(paraComment32)
+                        var paraComment33 = document.createElement("p");
+                        paraComment33.id = "paraComment33";
+                        document.getElementById("div3").appendChild(paraComment33)
+                        var paraComment34 = document.createElement("p");
+                        paraComment34.id = "paraComment34";
+                        document.getElementById("div3").appendChild(paraComment34)
+
+                        var FourthVideoId = result.items[3].id.videoId
+                        var FourthVideoTitle = result.items[3].snippet.title
+                        var FourthVideoDateArr = result.items[3].snippet.publishedAt.split("")
+                        FourthVideoDateArray = FourthVideoDateArr.slice(0, 10)
+                        var FourthVideoDate = FourthVideoDateArray.join("")
+                        var FourthChannelName = result.items[3].snippet.channelTitle
+                        src3 = `https://www.youtube.com/embed/${FourthVideoId}`
+                        document.getElementById("iframe3").src = src3;
+                        var paraTitle4 = document.createElement("p");
+                        paraTitle4.id = "paraTitle4";
+                        document.getElementById("div4").appendChild(paraTitle4)
+                        makeText("Title: " + FourthVideoTitle, paraTitle4)
+                        var paraDate4 = document.createElement("p");
+                        paraDate4.id = "paraDate4";
+                        document.getElementById("div4").appendChild(paraDate4)
+                        makeText("Date: " + FourthVideoDate, paraDate4)
+                        var paraChannel4 = document.createElement("p");
+                        paraChannel4.id = "paraChannel4";
+                        document.getElementById("div4").appendChild(paraChannel4)
+                        makeText("Channel: " + FourthChannelName, paraChannel4)
+                        var paraComment40 = document.createElement("p");
+                        paraComment40.id = "paraComment40";
+                        document.getElementById("div4").appendChild(paraComment40)
+                        var paraComment41 = document.createElement("p");
+                        paraComment41.id = "paraComment41";
+                        document.getElementById("div4").appendChild(paraComment41)
+                        var paraComment42 = document.createElement("p");
+                        paraComment42.id = "paraComment42";
+                        document.getElementById("div4").appendChild(paraComment42)
+                        var paraComment43 = document.createElement("p");
+                        paraComment43.id = "paraComment43";
+                        document.getElementById("div4").appendChild(paraComment43)
+                        var paraComment44 = document.createElement("p");
+                        paraComment44.id = "paraComment44";
+                        document.getElementById("div4").appendChild(paraComment44)
+
+                        var FifthVideoId = result.items[4].id.videoId
+                        var FifthVideoTitle = result.items[4].snippet.title
+                        var FifthVideoDateArr = result.items[4].snippet.publishedAt.split("")
+                        FifthVideoDateArray = FifthVideoDateArr.slice(0, 10)
+                        var FifthVideoDate = FifthVideoDateArray.join("")
+                        var FifthChannelName = result.items[4].snippet.channelTitle
+                        src4 = `https://www.youtube.com/embed/${FifthVideoId}`
+                        document.getElementById("iframe4").src = src4;
+                        var paraTitle5 = document.createElement("p");
+                        paraTitle5.id = "paraTitle5";
+                        document.getElementById("div5").appendChild(paraTitle5)
+                        makeText("Title: " + FifthVideoTitle, paraTitle5)
+                        var paraDate5 = document.createElement("p");
+                        paraDate5.id = "paraDate5";
+                        document.getElementById("div5").appendChild(paraDate5)
+                        makeText("Date: " + FifthVideoDate, paraDate5)
+                        var paraChannel5 = document.createElement("p");
+                        paraChannel5.id = "paraChannel5";
+                        document.getElementById("div5").appendChild(paraChannel5)
+                        makeText("Channel: " + FifthChannelName, paraChannel5)
+                        var paraComment50 = document.createElement("p");
+                        paraComment50.id = "paraComment50";
+                        document.getElementById("div5").appendChild(paraComment50)
+                        var paraComment51 = document.createElement("p");
+                        paraComment51.id = "paraComment51";
+                        document.getElementById("div5").appendChild(paraComment51)
+                        var paraComment52 = document.createElement("p");
+                        paraComment52.id = "paraComment52";
+                        document.getElementById("div5").appendChild(paraComment52)
+                        var paraComment53 = document.createElement("p");
+                        paraComment53.id = "paraComment53";
+                        document.getElementById("div5").appendChild(paraComment53)
+                        var paraComment54 = document.createElement("p");
+                        paraComment54.id = "paraComment54";
+                        document.getElementById("div5").appendChild(paraComment54)
+
+                        const urlComments = `https://www.googleapis.com/youtube/v3/commentThreads?part=snippet%2Creplies&key=${YOUTUBE_API_KEY}&maxResults=5&videoId=` + FirstVideoId;
+                        fetch(urlComments)
+                            .then(function (data) {
+                                return data.json()
+                            }).then(function (result1) {
+                                var comments = result1
+                                console.log(comments)
+                                for (i = 0; i < 5; i++) {
+                                    var comment = comments.items[i].snippet.topLevelComment.snippet.textDisplay
+                                    var person = comments.items[i].snippet.topLevelComment.snippet.authorDisplayName
+                                    var location = document.getElementById("paraComment" + [i])
+                                    makeText(person + ": " + comment, location)
+                                }
+                            })
+                        const urlComments2 = `https://www.googleapis.com/youtube/v3/commentThreads?part=snippet%2Creplies&key=${YOUTUBE_API_KEY}&maxResults=5&videoId=` + SecondVideoId;
+                        fetch(urlComments2)
+                            .then(function (data) {
+                                return data.json()
+                            }).then(function (result2) {
+                                var comments2 = result2
+                                console.log(comments2)
+                                for (f = 0; f < 5; f++) {
+                                    var comment2 = comments2.items[f].snippet.topLevelComment.snippet.textDisplay
+                                    var person2 = comments2.items[f].snippet.topLevelComment.snippet.authorDisplayName
+                                    var location2 = document.getElementById("paraComment2" + [f])
+                                    makeText(person2 + ": " + comment2, location2)
+                                }
+                            })
+                        const urlComments3 = `https://www.googleapis.com/youtube/v3/commentThreads?part=snippet%2Creplies&key=${YOUTUBE_API_KEY}&maxResults=5&videoId=` + ThirdVideoId;
+                        fetch(urlComments3)
+                            .then(function (data) {
+                                return data.json()
+                            }).then(function (result3) {
+                                var comments3 = result3
+                                console.log(comments3)
+                                for (g = 0; g < 5; g++) {
+                                    var comment3 = comments3.items[g].snippet.topLevelComment.snippet.textDisplay
+                                    var person3 = comments3.items[g].snippet.topLevelComment.snippet.authorDisplayName
+                                    var location3 = document.getElementById("paraComment3" + [g])
+                                    makeText(person3 + ": " + comment3, location3)
+                                }
+                            })
+                        const urlComments4 = `https://www.googleapis.com/youtube/v3/commentThreads?part=snippet%2Creplies&key=${YOUTUBE_API_KEY}&maxResults=5&videoId=` + FourthVideoId;
+                        fetch(urlComments4)
+                            .then(function (data) {
+                                return data.json()
+                            }).then(function (result4) {
+                                var comments4 = result4
+                                console.log(comments4)
+                                for (h = 0; h < 5; h++) {
+                                    var comment4 = comments4.items[h].snippet.topLevelComment.snippet.textDisplay
+                                    var person4 = comments4.items[h].snippet.topLevelComment.snippet.authorDisplayName
+                                    var location4 = document.getElementById("paraComment4" + [h])
+                                    makeText(person4 + ": " + comment4, location4)
+                                }
+                            })
+                        const urlComments5 = `https://www.googleapis.com/youtube/v3/commentThreads?part=snippet%2Creplies&key=${YOUTUBE_API_KEY}&maxResults=5&videoId=` + FifthVideoId;
+                        fetch(urlComments5)
+                            .then(function (data) {
+                                return data.json()
+                            }).then(function (result5) {
+                                var comments5 = result5
+                                console.log(comments5)
+                                for (j = 0; j < 5; j++) {
+                                    var comment5 = comments5.items[j].snippet.topLevelComment.snippet.textDisplay
+                                    var person5 = comments5.items[j].snippet.topLevelComment.snippet.authorDisplayName
+                                    var location5 = document.getElementById("paraComment5" + [j])
+                                    makeText(person5 + ": " + comment5, location5)
+                                }
+                            })
+
+                        // function onPlayerReady(event) {
+                        //     event.target.playVideo();
+                        // }
+
+                        // var done = false;
+                        // var player = document.getElementById("iframe")
+                        // function onPlayerStateChange(event) {
+                        //     if (event.data == YT.PlayerState.PLAYING && !done) {
+                        //         setTimeout(stopVideo, 6000);
+                        //         done = true;
+                        //     }
+                        // }
+                        // function stopVideo() {
+                        //     player.stopVideo();
+                        // }
+
+                        // document.getElementById("stop").addEventListener('click', function () {
+                        //     stopVideo();
+                        //     console.log("clicked")
+                        // })
+                    });
+
+            }
+            document.getElementById("btn").addEventListener('click', function () {
+                var element1 = document.getElementById("paraTitle1");
+                element1.parentNode.removeChild(element1);
+                var element2 = document.getElementById("paraDate1");
+                element2.parentNode.removeChild(element2);
+                var element3 = document.getElementById("paraTitle2");
+                element3.parentNode.removeChild(element3);
+                var element4 = document.getElementById("paraDate2");
+                element4.parentNode.removeChild(element4);
+                var element5 = document.getElementById("paraTitle3");
+                element5.parentNode.removeChild(element5);
+                var element6 = document.getElementById("paraDate3");
+                element6.parentNode.removeChild(element6);
+                var element7 = document.getElementById("paraTitle4");
+                element7.parentNode.removeChild(element7);
+                var element8 = document.getElementById("paraDate4");
+                element8.parentNode.removeChild(element8);
+                var element9 = document.getElementById("paraTitle5");
+                element9.parentNode.removeChild(element9);
+                var element10 = document.getElementById("paraDate5");
+                element10.parentNode.removeChild(element10);
+                var element11 = document.getElementById("paraChannel1");
+                element11.parentNode.removeChild(element11);
+                var element12 = document.getElementById("paraChannel2");
+                element12.parentNode.removeChild(element12);
+                var element13 = document.getElementById("paraChannel3");
+                element13.parentNode.removeChild(element13);
+                var element14 = document.getElementById("paraChannel4");
+                element14.parentNode.removeChild(element14);
+                var element15 = document.getElementById("paraChannel5");
+                element15.parentNode.removeChild(element15)
+                var element16 = document.getElementById("paraComment0");
+                element16.parentNode.removeChild(element16)
+                var element17 = document.getElementById("paraComment1");
+                element17.parentNode.removeChild(element17)
+                var element18 = document.getElementById("paraComment2");
+                element18.parentNode.removeChild(element18)
+                var element19 = document.getElementById("paraComment3");
+                element19.parentNode.removeChild(element19)
+                var element20 = document.getElementById("paraComment4");
+                element20.parentNode.removeChild(element20)
+                var element21 = document.getElementById("paraComment5");
+                element21.parentNode.removeChild(element21)
+                var element22 = document.getElementById("paraComment10");
+                element22.parentNode.removeChild(element22)
+                var element23 = document.getElementById("paraComment11");
+                element23.parentNode.removeChild(element23)
+                var element24 = document.getElementById("paraComment12");
+                element24.parentNode.removeChild(element24)
+                var element25 = document.getElementById("paraComment13");
+                element25.parentNode.removeChild(element25)
+                var element26 = document.getElementById("paraComment14");
+                element26.parentNode.removeChild(element26)
+                var element27 = document.getElementById("paraComment15");
+                element27.parentNode.removeChild(element27)
+                var element28 = document.getElementById("paraComment20");
+                element28.parentNode.removeChild(element28)
+                var element29 = document.getElementById("paraComment21");
+                element29.parentNode.removeChild(element29)
+                var element30 = document.getElementById("paraComment22");
+                element30.parentNode.removeChild(element30)
+                var element31 = document.getElementById("paraComment23");
+                element31.parentNode.removeChild(element31)
+                var element32 = document.getElementById("paraComment24");
+                element32.parentNode.removeChild(element32)
+                var element33 = document.getElementById("paraComment25");
+                element33.parentNode.removeChild(element33)
+                var element34 = document.getElementById("paraComment30");
+                element34.parentNode.removeChild(element34)
+                var element35 = document.getElementById("paraComment31");
+                element35.parentNode.removeChild(element35)
+                var element36 = document.getElementById("paraComment32");
+                element36.parentNode.removeChild(element36)
+                var element37 = document.getElementById("paraComment33");
+                element37.parentNode.removeChild(element37)
+                var element38 = document.getElementById("paraComment34");
+                element38.parentNode.removeChild(element38)
+                var element39 = document.getElementById("paraComment35");
+                element39.parentNode.removeChild(element39)
+                var element40 = document.getElementById("paraComment40");
+                element40.parentNode.removeChild(element40)
+                var element41 = document.getElementById("paraComment41");
+                element41.parentNode.removeChild(element41)
+                var element42 = document.getElementById("paraComment42");
+                element42.parentNode.removeChild(element42)
+                var element43 = document.getElementById("paraComment43");
+                element43.parentNode.removeChild(element43)
+                var element44 = document.getElementById("paraComment44");
+                element44.parentNode.removeChild(element44)
+                var element45 = document.getElementById("paraComment45");
+                element45.parentNode.removeChild(element45)
+                var element46 = document.getElementById("paraComment50");
+                element46.parentNode.removeChild(element46)
+                var element47 = document.getElementById("paraComment51");
+                element47.parentNode.removeChild(element47)
+                var element48 = document.getElementById("paraComment52");
+                element48.parentNode.removeChild(element48)
+                var element49 = document.getElementById("paraComment53");
+                element49.parentNode.removeChild(element49)
+                var element50 = document.getElementById("paraComment54");
+                element50.parentNode.removeChild(element50)
+                var element51 = document.getElementById("paraComment55");
+                element51.parentNode.removeChild(element51)
+            })
+        }
+
+    </script>
+</body>
+
+</html>
